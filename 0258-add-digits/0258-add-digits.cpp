@@ -1,23 +1,15 @@
 class Solution {
-private:
-    int solve(string s){
-        int n = s.size();
-        int sum = 0;
-        for(auto x: s){
-            sum += x-'0';
-        }
-        return sum;
-    }
 public:
     int addDigits(int num) {
-        int ans  =0 ;
-        string s = to_string(num);
-        if(s.size() == 1) return num;
-        while(s.size() != 1)
+        int sum=0;
+        while(num)
         {
-            ans = solve(s);
-            s = to_string(ans);
+            sum+=(num%10);
+            num/=10;
         }
-        return ans;
+        if(sum<10)
+            return sum;
+        else
+            return addDigits(sum);    
     }
 };

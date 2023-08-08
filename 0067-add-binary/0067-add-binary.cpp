@@ -1,89 +1,19 @@
 class Solution {
 public:
     string addBinary(string a, string b) {
-        
-        int alen = a.size();
-        int blen = b.size();
-        
-        if(alen > blen)
-            return addBinary(b, a);
-        
-        
-        string ans = "";
-        bool c = 0;
-        reverse(a.begin(), a.end());
-        reverse(b.begin(), b.end());
-        
-        
-        for(int i = 0; i < alen ; i++){
-            if(a[i] == '1' && b[i] == '1'){
-                if(c == 1){
-                    ans.push_back('1');
-                    c = 1;
-                }
-                else{
-                    ans.push_back('0');
-                    c = 1;
-                }
-            }
-            else if(a[i] == '1' || b[i] == '1'){
-                if(c == 1){
-                    ans.push_back('0');
-                    c = 1;
-                }
-                else{
-                    ans.push_back('1');
-                    c = 0;
-                }
-            }
-            else{
-                 if(c == 1){
-                    ans.push_back('1');
-                    c = 0;
-                }
-                else{
-                    ans.push_back('0');
-                    c = 0;
-                }
-            }
+        string res;
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+        int carry = 0;
+        while(i >= 0 || j >= 0){
+            int sum = carry;
+            if(i >= 0) sum += a[i--] - '0';
+            if(j >= 0) sum += b[j--] - '0';
+            carry = sum > 1 ? 1 : 0;
+            res += to_string(sum % 2);
         }
-        
-        if(c == 1){
-            int i = alen;
-            while(c == 1 && i < blen){
-               if(b[i] == '1'){
-                   ans.push_back('0');
-                   c = 1; 
-               }
-                else{
-                    ans.push_back('1');
-                   c = 0;
-                }
-                
-                i++;
-            }
-            
-            
-            if(i < blen){
-                 while( i < blen){
-                     ans.push_back(b[i]);
-                     i++;
-                 }
-            }
-            else if (c == 1){
-                ans.push_back('1');
-            }
-        }
-        else{
-            int i = alen;
-             while( i < blen){
-                     ans.push_back(b[i]);
-                     i++;
-                 }
-        }
-        
-        reverse(ans.begin(), ans.end());
-        
-        return ans;
+        if(carry) res += to_string(carry);
+        reverse(res.begin(), res.end());
+        return res;
     }
 };

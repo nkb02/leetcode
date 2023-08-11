@@ -8,25 +8,29 @@ class Solution {
     long long int count(int coins[], int N, int target) {
 
         // unbounded knapsack
-        vector<vector<long long int> > dp(N+1, vector<long long int> (target +1, 0));
+        // vector<vector<long long int> > dp(N+1, vector<long long int> (target +1, 0));
+        
+        // space optimation
+        vector<long long int> prev(target+1, 0), cur(target+1, 0);
         // edge case
         for(int sum = 0 ; sum <= target; sum++){
-            if(sum % coins[0] == 0) dp[0][sum] = 1;
+            if(sum % coins[0] == 0) prev[sum] = 1;
         }
         for(int ind = 1; ind < N; ind++){
              for(int sum = 0 ; sum <= target; sum++){
                 long long take = 0, notTake;
                 if(coins[ind] <= sum){
-                    take = dp[ind][sum - coins[ind]];
+                    take = cur[sum - coins[ind]];
                 }
                 // not take
                
-                notTake =  dp[ind-1][sum];
+                notTake = prev[sum];
                 
-                dp[ind][sum] = notTake + take;     
+                cur[sum] = notTake + take;     
             }
+            prev = cur;
         }
-        return dp[N-1][target];
+        return prev[target];
         
     }
 };

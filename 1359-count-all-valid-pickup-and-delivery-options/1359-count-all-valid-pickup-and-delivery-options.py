@@ -1,7 +1,9 @@
-class Solution:
-    def countOrders(self, n: int) -> int:
-        res, mod = 1, 10**9 + 7
-        for i in range(2, n+1):
-            res = res * (i * 2- 1)* (i*2)/2 % mod
-        return int(res)
-        
+class Solution {
+public:
+    int countOrders(int n) {
+        long res = 1, mod = 1e9 + 7;
+        for (int i = 1; i <= n; ++i)
+            res = res * (i * 2 - 1) * i % mod;
+        return res;
+    }
+};

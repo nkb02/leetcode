@@ -7,16 +7,9 @@ type ReturnObj = {
 function createCounter(init: number): ReturnObj {
     let cnt = init;
     return{
-        increment(){
-            return ++init;
-        },
-        decrement(){
-            return --init;
-        },
-        reset(){
-            init = cnt;
-            return cnt;
-        }
+        increment: () => cnt+=1, 
+        decrement: () => cnt-=1, 
+        reset: () => (cnt=init),
     }
 };
 

@@ -1,14 +1,22 @@
 class Solution {
 public:
-    int countPairs(vector<vector<int>>& coordinates, int k) {
-        unordered_map<int, unordered_map<int, int>> count;
-        int res = 0;
-        for (auto& c : coordinates) {
-            for (int x = 0; x <= k; x++)
-                if (count[c[0] ^ x].count(c[1] ^ (k - x)))
-                    res += count[c[0] ^ x][c[1] ^ (k - x)];
-            count[c[0]][c[1]]++;
+    int countPairs(vector<vector<int>>& c, int k) {
+        map<pair<int, int>, int> f;
+        for(auto i: c) {
+            f[{i[0], i[1]}]++;
         }
-        return res;
+        long long ans = 0;
+        for(auto i: c) {
+            f[{i[0], i[1]}]--;
+            for(int j = 0; j <= k; j++) {
+                int x = j ^ i[0];
+                int y = (k - j) ^ i[1];
+                if(f.find({x, y}) != f.end()) {
+                    ans += f[{x, y}];
+                }
+            }
+            f[{i[0], i[1]}]++;
+        }
+        return ans / 2;
     }
 };

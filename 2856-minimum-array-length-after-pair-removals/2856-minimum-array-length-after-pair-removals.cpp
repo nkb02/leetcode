@@ -2,23 +2,19 @@
 class Solution {
 public:
     int minLengthAfterRemovals(vector<int>& nums) {
-       int n = nums.size();
-        unordered_map<int, int> mp;
-        for(int i : nums){
-            mp[i]++;
-        }
-        int maxi = 0;
-        for(auto it : mp){
-            maxi = max(maxi, it.second);
-        }
-        if(maxi <= n/2){
-            if(n%2){
-                return 1;
+        int n = nums.size();
+        int i = 0, j = (n+1)/2;
+        int used = 0;
+        
+        while(j < n) {
+            if(nums[i] < nums[j]) {
+                i++;
+                used++;
             }
-            else{
-                return 0;
-            }
+
+            j++;
         }
-        return 2*maxi - n;
+        
+        return n - 2*used;
     }
 };

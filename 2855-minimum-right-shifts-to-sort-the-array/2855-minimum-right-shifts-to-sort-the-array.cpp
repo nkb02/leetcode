@@ -13,11 +13,17 @@ public:
         }
         vector<int> temp = nums;
         int  x = pos;
-        sort(temp.begin(), temp.end());
-        for(int i = 0; i < n;i ++){
-            if(temp[i] != nums[(x + i) % n])
-                return -1;
+        int cnt = 1, i = 0;
+        while(cnt < n){
+            if(nums[(x+i)%n] > nums[(x+i+1) % n]) return -1;
+            i++;
+            cnt++;
         }
+        // sort(temp.begin(), temp.end());
+        // for(int i = 0; i < n;i ++){
+        //     if(temp[i] != nums[(x + i) % n])
+        //         return -1;
+        // }
         if(pos == 0)
             return pos;
         else

@@ -1,29 +1,48 @@
 class Solution {
 public:
     int shortestPathLength(vector<vector<int>>& graph) {
-        int n = graph.size(),res = 0;
-        queue<tuple<int,int,int>> q;
-        vector<vector<int>> seen(n,vector<int>(1<<n));
-        for(int i=0;i<n;i++){
-            q.push(tuple<int,int,int>(i,1<<i,0));
-            seen[i][1<<i] = true;
-        }
-        while (!q.empty())
+        int n = graph.size();
+        if(n == 1) return 0;
+        
+        queue<pair<int,int>> q;
+        for(int node=0 ; node<n ; node++)
         {
-            auto [idx,mask,dist] = q.front();
-            q.pop();
-            if(mask==(1<<n)-1){
-                res = dist;
-                break;
-            }
-            for(auto v:graph[idx]){
-                int mask_v = mask|1<<v;
-                if(!seen[v][mask_v]){
-                    q.push(tuple<int,int,int>(v,mask_v,dist+1));
-                    seen[v][mask_v] = true;
+            q.push({node, (1<<node)});
+        }
+        
+        int finalState = ((1<<n) - 1), shortestPath = 0;
+        
+        vector<vector<bool>> visited(n, vector<bool>(finalState, false));
+        
+        while(!q.empty())
+        {
+            shortestPath++;
+            
+            int sz = q.size();
+            
+            while(sz--)
+            {
+                auto &p = q.front();
+                int currNode = p.first, currState = p.second;
+                q.pop();
+                
+                for(int &nextNode: graph[currNode])
+                {
+                    int nextState = (currState | (1<<nextNode));
+                    if(nextState == finalState)
+                    {
+                        return shortestPath;
+                    }
+                    
+                    if(!visited[nextNode][nextState])
+                    {
+                        visited[nextNode][nextState] = true;
+                        q.push({nextNode, nextState});
+                    }
                 }
             }
         }
-        return res;
+        
+        return -1;
     }
 };
